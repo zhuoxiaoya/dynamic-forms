@@ -1,5 +1,8 @@
 package com.yhtx.forms.model;
 
+import org.hibernate.annotations.Table;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,27 +10,32 @@ import javax.persistence.Id;
  * 组件
  */
 @Entity
-public class Assembly {
+@Table(appliesTo = "assembly",comment = "表单组件表")
+public class Assembly{
 
     /**
      * 组件ID
      */
     @Id
+    @Column(columnDefinition = "bigint(11) COMMENT '组件ID'")
     private Long assemblyId;
 
     /**
      * 组件名称
      */
+    @Column(columnDefinition = "varchar(50) COMMENT '组件名称'")
     private String name;
 
     /**
      * 是否必填
      */
+    @Column(columnDefinition = "varchar(50) COMMENT '是否必填'")
     private boolean required;
 
     /**
      * 组件类型
      */
+    @Column(columnDefinition = "varchar(50) COMMENT '组件类型'")
     private String editType;
 
 
