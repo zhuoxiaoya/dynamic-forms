@@ -5,8 +5,8 @@ import org.hibernate.annotations.Table;
 import javax.persistence.*;
 
 @Entity
-@Table(appliesTo = "template",comment = "表单模版视图表")
-public class TemplateVo {
+@Table(appliesTo = "forms_template_vo",comment = "表单模版视图表")
+public class FormsTemplateVo {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

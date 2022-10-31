@@ -1,8 +1,8 @@
 package com.yhtx.forms.runner;
 
 import com.yhtx.forms.enums.EditTypeEnum;
-import com.yhtx.forms.model.Assembly;
-import com.yhtx.forms.repository.AssemblyRepository;
+import com.yhtx.forms.model.FormsAssembly;
+import com.yhtx.forms.repository.FormsAssemblyRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -16,19 +16,19 @@ import java.util.stream.Stream;
 public class InitAssembly implements ApplicationRunner {
 
     @Resource
-    private AssemblyRepository assemblyRepository;
+    private FormsAssemblyRepository formsAssemblyRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
         EditTypeEnum.values();
         Stream.of(EditTypeEnum.values()).forEach(o-> {
-            Assembly assembly = new Assembly();
-            assembly.setAssemblyId(o.getEid());
-            assembly.setName(o.getName());
-            assembly.setEditType(o.getEditType());
-            assembly.setRequired(true);
-            assemblyRepository.save(assembly);
+            FormsAssembly formsAssembly = new FormsAssembly();
+            formsAssembly.setAssemblyId(o.getEid());
+            formsAssembly.setName(o.getName());
+            formsAssembly.setEditType(o.getEditType());
+            formsAssembly.setRequired(true);
+            formsAssemblyRepository.save(formsAssembly);
         });
 
     }

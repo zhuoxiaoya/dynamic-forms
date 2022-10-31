@@ -10,8 +10,8 @@ import javax.persistence.Id;
  * 组件
  */
 @Entity
-@Table(appliesTo = "assembly",comment = "表单组件表")
-public class Assembly{
+@Table(appliesTo = "forms_assembly",comment = "表单组件表")
+public class FormsAssembly {
 
     @Id
     @Column(columnDefinition = "bigint(11) COMMENT '组件ID'")

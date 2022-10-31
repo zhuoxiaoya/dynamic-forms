@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(appliesTo = "template",comment = "表单模版表")
-public class Template {
+@Table(appliesTo = "forms_template",comment = "表单模版表")
+public class FormsTemplate {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
