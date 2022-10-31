@@ -20,8 +20,8 @@ public class InitAssembly implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        EditTypeEnum.values();
 
+        EditTypeEnum.values();
         Stream.of(EditTypeEnum.values()).forEach(o-> {
             Assembly assembly = new Assembly();
             assembly.setAssemblyId(o.getEid());

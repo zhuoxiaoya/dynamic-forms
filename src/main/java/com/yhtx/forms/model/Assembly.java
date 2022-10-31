@@ -13,28 +13,16 @@ import javax.persistence.Id;
 @Table(appliesTo = "assembly",comment = "表单组件表")
 public class Assembly{
 
-    /**
-     * 组件ID
-     */
     @Id
     @Column(columnDefinition = "bigint(11) COMMENT '组件ID'")
     private Long assemblyId;
 
-    /**
-     * 组件名称
-     */
     @Column(columnDefinition = "varchar(50) COMMENT '组件名称'")
-    private String name;
+    private String assemblyName;
 
-    /**
-     * 是否必填
-     */
-    @Column(columnDefinition = "varchar(50) COMMENT '是否必填'")
+    @Column(columnDefinition = "bit(1) DEFAULT b'0' COMMENT '是否必填'")
     private boolean required;
 
-    /**
-     * 组件类型
-     */
     @Column(columnDefinition = "varchar(50) COMMENT '组件类型'")
     private String editType;
 
@@ -49,11 +37,11 @@ public class Assembly{
     }
 
     public String getName() {
-        return name;
+        return assemblyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String assemblyName) {
+        this.assemblyName = assemblyName;
     }
 
     public boolean isRequired() {
