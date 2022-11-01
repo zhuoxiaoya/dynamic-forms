@@ -15,6 +15,7 @@ import java.lang.annotation.Target;
 @EntityScan(basePackages = {"com.yhtx"})
 @ComponentScan(basePackages = {"com.yhtx"})
 @EnableJpaRepositories(basePackages = {"com.yhtx"})
+@FormsScan
 public @interface EnableDynamicForms {
 
 }
