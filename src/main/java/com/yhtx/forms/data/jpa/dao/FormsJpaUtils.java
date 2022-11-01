@@ -34,6 +34,15 @@ public class FormsJpaUtils {
         Set<String> cols = new HashSet<>();
         String eruptNameSymbol = formsModel.getFormsName() + ".";
         cols.add(eruptNameSymbol + formsModel.getPrimaryKeyCol() + AS + formsModel.getPrimaryKeyCol());
+        formsModel.getFormsFieldModels().forEach(field -> {
+            if (null != field.getField().getAnnotation(OneToMany.class) || null != field.getField().getAnnotation(ManyToMany.class)) {
+                return;
+            }
+            if (null != field.getField().getAnnotation(Transient.class)) {
+                return;
+            }
+            cols.add(eruptNameSymbol + field.getFieldName() + AS + field.getFieldName());
+        });
         return cols;
     }
 
