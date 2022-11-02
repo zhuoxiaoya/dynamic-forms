@@ -10,8 +10,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author YuePeng
- * date 2021/9/25 23:28
+ * 数据库管理池配置
  */
 @Getter
 @Setter

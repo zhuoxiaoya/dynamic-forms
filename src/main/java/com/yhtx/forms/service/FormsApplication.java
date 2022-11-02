@@ -14,8 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * @author YuePeng
- * date 2020-09-09
+ * 数据启动选择数据源，目前暂时选择的jpa
  */
 @Slf4j
 public class FormsApplication implements ImportBeanDefinitionRegistrar {

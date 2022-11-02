@@ -6,8 +6,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * @author YuePeng
- * date 2021/9/14
+ * 数据源
  */
 @Getter
 @Setter

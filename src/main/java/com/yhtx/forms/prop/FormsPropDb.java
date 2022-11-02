@@ -5,8 +5,7 @@ import lombok.Setter;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 
 /**
- * @author YuePeng
- * date 2021/3/28 22:17
+ * jpa数据源情况相关参数
  */
 @Getter
 @Setter

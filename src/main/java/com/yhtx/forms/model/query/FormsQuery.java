@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * erupt通用数据对象
+ * 通用数据对象
  */
 @Getter
 @Setter

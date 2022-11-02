@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author YuePeng
- * date 10/10/18.
+ * 抽象基本查询相关接口，需要自行实现
  */
 public interface IFormsDataService {
 

@@ -1,8 +1,7 @@
 package com.yhtx.forms.constant;
 
 /**
- * @author YuePeng
- * date 2020-06-09
+ * 系统配置项
  */
 public class FormsConst {
 
