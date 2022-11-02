@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -35,9 +36,10 @@ public class FormsModifyController {
     @SneakyThrows
     @PostMapping({"/{forms}"})
     @Transactional
-    public FormsApiModel addFormsData(@PathVariable("forms") String forms, @RequestBody JsonObject data,
+    public FormsApiModel addFormsData(@PathVariable("forms") String forms, @RequestBody Map<String,Object> map,
                                                JsonObject jsonObject, HttpServletRequest request) {
         FormsModel formsModel = FormsCoreService.getForms(forms);
+        JsonObject data = new Gson().fromJson(gson.toJson(map),JsonObject.class);
         FormsApiModel formsApiModel = FormsUtil.validDateFormsValue(formsModel, data);
         if (formsApiModel.getStatus() == FormsApiModel.Status.ERROR) return formsApiModel;
         Object o = gson.fromJson(data.toString(), formsModel.getClazz());
@@ -57,8 +59,9 @@ public class FormsModifyController {
 
     @PutMapping("/{forms}")
     @Transactional
-    public FormsApiModel editFormsData(@PathVariable("forms") String forms, @RequestBody JsonObject data) throws IllegalAccessException {
+    public FormsApiModel editFormsData(@PathVariable("forms") String forms, @RequestBody Map<String,Object> map) throws IllegalAccessException {
         FormsModel formsModel = FormsCoreService.getForms(forms);
+        JsonObject data = new Gson().fromJson(gson.toJson(map),JsonObject.class);
         FormsApiModel formsApiModel = FormsUtil.validDateFormsValue(formsModel, data);
         if (formsApiModel.getStatus() == FormsApiModel.Status.ERROR) return formsApiModel;
         formsService.verifyIdPermissions(formsModel, data.get(formsModel.getPrimaryKeyCol()).getAsString());
