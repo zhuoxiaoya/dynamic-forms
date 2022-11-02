@@ -3,7 +3,6 @@ package com.yhtx.forms.controller;
 import com.yhtx.forms.annotation.Comment;
 import com.yhtx.forms.constant.FormsRestPath;
 import com.yhtx.forms.invoke.DataProcessorManager;
-import com.yhtx.forms.model.base.BaseModel;
 import com.yhtx.forms.model.query.Page;
 import com.yhtx.forms.model.query.TableQueryVo;
 import com.yhtx.forms.model.vo.FormsModel;
@@ -33,7 +32,7 @@ public class FormsDataApiController {
     public Map<String, Object> getFormsDataById(@PathVariable("assembly") String assemblyName, @PathVariable("id") String id) {
         FormsModel formsModel = FormsCoreService.getForms(assemblyName);
         formsService.verifyIdPermissions(formsModel, id);
-        Object data = DataProcessorManager.getEruptDataProcessor(formsModel.getClazz())
+        Object data = DataProcessorManager.getFormsDataProcessor(formsModel.getClazz())
                 .findDataById(formsModel, FormsUtil.toFormsId(formsModel, id));
         return FormsUtil.generateEruptDataMap(formsModel, data);
     }

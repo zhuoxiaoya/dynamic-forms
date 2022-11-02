@@ -37,7 +37,7 @@ public class FormsService {
         conditionStrings.addAll(Arrays.asList(customCondition));
 
         Optional.ofNullable(serverCondition).ifPresent(legalConditions::addAll);
-        Page page = DataProcessorManager.getEruptDataProcessor(formsModel.getClazz())
+        Page page = DataProcessorManager.getFormsDataProcessor(formsModel.getClazz())
                 .queryList(formsModel, new Page(tableQueryVo.getPageIndex(), tableQueryVo.getPageSize(), tableQueryVo.getSort()),
                         FormsQuery.builder().orderBy(tableQueryVo.getSort()).conditionStrings(conditionStrings).conditions(legalConditions).build());
         Optional.ofNullable(page.getList()).ifPresent(it -> DataHandlerUtil.convertDataToFormsView(formsModel, it));
@@ -53,7 +53,7 @@ public class FormsService {
     public void verifyIdPermissions(FormsModel formsModel, String id) {
         List<Condition> conditions = new ArrayList<>();
         conditions.add(new Condition(formsModel.getPrimaryKeyCol(), id, QueryExpression.EQ));
-        Page page = DataProcessorManager.getEruptDataProcessor(formsModel.getClazz())
+        Page page = DataProcessorManager.getFormsDataProcessor(formsModel.getClazz())
                 .queryList(formsModel, new Page(0, 1, null),
                         FormsQuery.builder().conditions(conditions).build());
         if (page.getList().size() <= 0) {

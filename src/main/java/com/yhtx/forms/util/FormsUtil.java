@@ -1,12 +1,17 @@
 package com.yhtx.forms.util;
 
+import com.google.gson.JsonObject;
 import com.yhtx.forms.annotation.Comment;
 import com.yhtx.forms.enums.QueryExpression;
+import com.yhtx.forms.enums.SceneEnum;
+import com.yhtx.forms.model.api.FormsApiModel;
 import com.yhtx.forms.model.vo.FormsFieldModel;
 import com.yhtx.forms.model.vo.FormsModel;
 import com.yhtx.forms.query.Condition;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.persistence.Column;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,6 +26,14 @@ public class FormsUtil {
     @SneakyThrows
     public static Map<String, Object> generateEruptDataMap(FormsModel formsModel, Object obj) {
         Map<String, Object> map = new HashMap<>();
+        for (FormsFieldModel fieldModel : formsModel.getFormsFieldModels()) {
+            Field field = fieldModel.getField();
+            field.setAccessible(true);
+            Object value = field.get(obj);
+            if (null != value) {
+                map.put(field.getName(), value);
+            }
+        }
         return map;
     }
 
@@ -71,5 +84,39 @@ public class FormsUtil {
             }
         }
         return legalConditions;
+    }
+
+    @Comment("校验数据非空判断")
+    public static FormsApiModel validDateFormsValue(FormsModel formsModel, JsonObject data) {
+        return FormsApiModel.successApi();
+    }
+
+    @Comment("清理序列化后对象所产生的默认值（通过json串进行校验）")
+    public static void clearObjectDefaultValueByJson(Object obj, JsonObject data) {
+        ReflectUtil.findClassAllFields(obj.getClass(), field -> {
+            try {
+                field.setAccessible(true);
+                if (null != field.get(obj)) {
+                    if (!data.has(field.getName())) {
+                        field.set(obj, null);
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Comment("将对象A的非空数据源覆盖到对象B中")
+    public static Object dataTarget(FormsModel formsModel, Object data, Object target, SceneEnum sceneEnum) {
+        ReflectUtil.findClassAllFields(formsModel.getClazz(), f -> Optional.ofNullable(f.getAnnotation(Column.class)).ifPresent(eruptField -> {
+                try {
+                    f.setAccessible(true);
+                    f.set(target, f.get(data));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+        }));
+        return target;
     }
 }

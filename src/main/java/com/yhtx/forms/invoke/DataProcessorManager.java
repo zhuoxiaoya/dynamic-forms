@@ -20,7 +20,7 @@ public class DataProcessorManager {
         formsDataServiceMap.put(name, eruptDataService);
     }
 
-    public static IFormsDataService getEruptDataProcessor(Class<?> clazz) {
+    public static IFormsDataService getFormsDataProcessor(Class<?> clazz) {
         return FormsSpringUtil.getBean(formsDataServiceMap.get(
                 FormsConst.DEFAULT_DATA_PROCESSOR));
     }

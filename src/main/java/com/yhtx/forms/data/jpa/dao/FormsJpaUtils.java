@@ -86,7 +86,29 @@ public class FormsJpaUtils {
         //condition
         if (null != conditions) {
             for (Condition condition : conditions) {
+                FormsFieldModel formsFieldModel = formsModel.getFormsFieldMap().get(condition.getKey());
+                if (null != formsFieldModel) {
+                    String _key = FormsJpaUtils.completeHqlPath(formsModel.getFormsName(), condition.getKey());
 
+                    switch (condition.getExpression()) {
+                        case EQ:
+                            hql.append(FormsJpaUtils.AND).append(_key).append("=:").append(condition.getKey());
+                            break;
+                        case LIKE:
+                            hql.append(FormsJpaUtils.AND).append(_key).append(" like :").append(condition.getKey());
+                            break;
+                        case RANGE:
+                            hql.append(FormsJpaUtils.AND).append(_key).append(" between :")
+                                    .append(L_VAL_KEY).append(condition.getKey()).append(" and :")
+                                    .append(R_VAL_KEY).append(condition.getKey());
+                            break;
+                        case IN:
+                            hql.append(FormsJpaUtils.AND).append(_key).append(" in (:").append(condition.getKey()).append(")");
+                            break;
+                    }
+                } else {
+                    hql.append(FormsJpaUtils.AND).append(condition.getKey()).append("=:").append(condition.getKey());
+                }
             }
         }
         Optional.ofNullable(customCondition).ifPresent(it -> it.forEach(str -> {

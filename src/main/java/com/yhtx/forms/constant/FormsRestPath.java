@@ -13,4 +13,7 @@ public class FormsRestPath {
     //数据
     public static final String FORMS_DATA = FORMS_API + "/data";
 
+    //数据增删改操作
+    public static final String FORMS_DATA_MODIFY = FORMS_DATA + "/modify";
+
 }
