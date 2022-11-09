@@ -10,11 +10,13 @@ import com.yhtx.forms.model.query.Column;
 import com.yhtx.forms.model.query.FormsQuery;
 import com.yhtx.forms.model.query.Page;
 import com.yhtx.forms.model.vo.FormsModel;
+import com.yhtx.forms.service.FormsCoreService;
 import com.yhtx.forms.service.IFormsDataService;
 import com.yhtx.forms.util.ReflectUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,7 +41,8 @@ public class FormsDataServiceDbImpl implements IFormsDataService {
 
     @Override
     public Object findDataById(FormsModel formsModel, Object id) {
-        return entityManagerService.getEntityManager(formsModel.getClazz(), (em) -> em.find(formsModel.getClazz(), id));
+        JpaRepository formsRepository = FormsCoreService.getFormsRepository(formsModel.getFormsName());
+        return formsRepository.getOne(Long.parseLong(id.toString()));
     }
 
     @Override
@@ -51,7 +54,8 @@ public class FormsDataServiceDbImpl implements IFormsDataService {
     @Override
     public void addData(FormsModel formsModel, Object data) {
         try {
-            eruptJpaDao.addEntity(formsModel.getClazz(), data);
+            JpaRepository formsRepository = FormsCoreService.getFormsRepository(formsModel.getFormsName());
+            formsRepository.save(data);
         } catch (Exception e) {
             handlerException(e, formsModel);
         }
@@ -59,11 +63,12 @@ public class FormsDataServiceDbImpl implements IFormsDataService {
 
     @Transactional
     @Override
-    public void editData(FormsModel eruptModel, Object data) {
+    public void editData(FormsModel formsModel, Object data) {
         try {
-            eruptJpaDao.editEntity(eruptModel.getClazz(), data);
+            JpaRepository formsRepository = FormsCoreService.getFormsRepository(formsModel.getFormsName());
+            formsRepository.saveAndFlush(data);
         } catch (Exception e) {
-            handlerException(e, eruptModel);
+            handlerException(e, formsModel);
         }
     }
 
@@ -85,9 +90,10 @@ public class FormsDataServiceDbImpl implements IFormsDataService {
 
     @Transactional
     @Override
-    public void deleteData(FormsModel eruptModel, Object object) {
+    public void deleteData(FormsModel formsModel, Object object) {
         try {
-            eruptJpaDao.removeEntity(eruptModel.getClazz(), object);
+            JpaRepository formsRepository = FormsCoreService.getFormsRepository(formsModel.getFormsName());
+            formsRepository.delete(object);
         } catch (DataIntegrityViolationException | ConstraintViolationException e) {
             e.printStackTrace();
             throw new FormsWebApiRuntimeException("删除失败，可能存在关联数据，无法直接删除");

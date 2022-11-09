@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
- * 判断实体类字段属性基本类型工具类
+ * @author YuePeng
+ * date 2018-11-01.
  */
 public class TypeUtil {
     private static final String[] SIMPLE_JPA_TYPE = {

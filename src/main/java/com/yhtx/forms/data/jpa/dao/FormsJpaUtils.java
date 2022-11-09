@@ -4,17 +4,16 @@ import com.yhtx.forms.model.query.FormsQuery;
 import com.yhtx.forms.model.vo.FormsFieldModel;
 import com.yhtx.forms.model.vo.FormsModel;
 import com.yhtx.forms.query.Condition;
+import com.yhtx.forms.service.FormsCoreService;
 import com.yhtx.forms.util.ReflectUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 /**
- * 数据查询sql拼接
+ * @author YuePeng date 2018-11-05.
  */
 public class FormsJpaUtils {
 
@@ -73,7 +72,12 @@ public class FormsJpaUtils {
             if (null != field.getAnnotation(ManyToOne.class) || null != field.getAnnotation(OneToOne.class)) {
                 FormsFieldModel model = formsModel.getFormsFieldMap().get(field.getName());
                 if (model != null) {
-
+                   //这里需要拼接连表查询的字段对象的每一列的列名
+//                    String name = model.getField().getClass().getSimpleName();
+//                    FormsModel forms = FormsCoreService.getForms(name);
+//                    if(Objects.nonNull(forms)){
+                        hql.append(LEFT_JOIN).append(formsModel.getFormsName()).append(".").append(field.getName()).append(AS).append(field.getName());
+//                    }
                 }
             }
         });

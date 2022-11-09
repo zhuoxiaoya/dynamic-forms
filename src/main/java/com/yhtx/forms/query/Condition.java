@@ -25,4 +25,8 @@ public class Condition {
         this.value = value;
     }
 
+    public Condition(){
+
+    }
+
 }

@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 选择框视图实体
+ * @author YuePeng
+ * date 2020-05-21
  */
 @Getter
 @Setter

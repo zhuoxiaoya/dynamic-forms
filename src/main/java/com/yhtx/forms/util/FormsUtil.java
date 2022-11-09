@@ -2,6 +2,7 @@ package com.yhtx.forms.util;
 
 import com.google.gson.JsonObject;
 import com.yhtx.forms.annotation.Comment;
+import com.yhtx.forms.annotation.Title;
 import com.yhtx.forms.enums.QueryExpression;
 import com.yhtx.forms.enums.SceneEnum;
 import com.yhtx.forms.model.api.FormsApiModel;
@@ -12,7 +13,11 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Column;
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -22,7 +27,7 @@ import java.util.*;
  */
 public class FormsUtil {
 
-    //将object中erupt标识的字段抽取出来放到map中
+    //将object中的字段抽取出来放到map中
     @SneakyThrows
     public static Map<String, Object> generateEruptDataMap(FormsModel formsModel, Object obj) {
         Map<String, Object> map = new HashMap<>();
@@ -109,7 +114,7 @@ public class FormsUtil {
 
     @Comment("将对象A的非空数据源覆盖到对象B中")
     public static Object dataTarget(FormsModel formsModel, Object data, Object target, SceneEnum sceneEnum) {
-        ReflectUtil.findClassAllFields(formsModel.getClazz(), f -> Optional.ofNullable(f.getAnnotation(Column.class)).ifPresent(eruptField -> {
+        ReflectUtil.findClassAllFields(formsModel.getClazz(), f -> Optional.ofNullable(f.getAnnotation(Title.class)).ifPresent(eruptField -> {
                 try {
                     f.setAccessible(true);
                     f.set(target, f.get(data));
@@ -118,5 +123,26 @@ public class FormsUtil {
                 }
         }));
         return target;
+    }
+
+    @Comment("将请求参数里到请求参数设置到对象内")
+    public static void setCondition(Object paramObj,Map<String,Object> conditions){
+        ReflectUtil.findClassAllFields(paramObj.getClass(), field -> {
+            try {
+                field.setAccessible(true);
+                if(conditions.containsKey(field.getName())){
+                    Object value = conditions.get(field.getName());
+                    if(field.getName().equals("id")){
+                        Long longValue = Long.parseLong(value.toString());
+                        field.setLong(paramObj,longValue);
+                    }else {
+                        field.set(paramObj,value);
+                    }
+
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

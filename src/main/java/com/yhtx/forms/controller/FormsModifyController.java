@@ -67,9 +67,7 @@ public class FormsModifyController {
         formsService.verifyIdPermissions(formsModel, data.get(formsModel.getPrimaryKeyCol()).getAsString());
         Object o = this.gson.fromJson(data.toString(), formsModel.getClazz());
         FormsUtil.clearObjectDefaultValueByJson(o, data);
-        Object obj = FormsUtil.dataTarget(formsModel, o, DataProcessorManager.getFormsDataProcessor(formsModel.getClazz())
-                .findDataById(formsModel, ReflectUtil.findClassField(formsModel.getClazz(), formsModel.getPrimaryKeyCol()).get(o)), SceneEnum.EDIT);
-        DataProcessorManager.getFormsDataProcessor(formsModel.getClazz()).editData(formsModel, obj);
+        DataProcessorManager.getFormsDataProcessor(formsModel.getClazz()).editData(formsModel, o);
         this.modifyLog(formsModel, "EDIT", data.toString());
         return FormsApiModel.successApi();
     }

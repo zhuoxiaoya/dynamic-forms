@@ -1,6 +1,8 @@
 package com.yhtx.forms.service;
 
 import com.yhtx.forms.annotation.Comment;
+import com.yhtx.forms.annotation.FormsProxy;
+import com.yhtx.forms.annotation.Title;
 import com.yhtx.forms.model.vo.FormsFieldModel;
 import com.yhtx.forms.model.vo.FormsModel;
 import com.yhtx.forms.toolkit.TimeRecorder;
@@ -8,17 +10,16 @@ import com.yhtx.forms.util.FormsSpringUtil;
 import com.yhtx.forms.util.ReflectUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.*;
@@ -28,16 +29,21 @@ import java.util.*;
 @Service
 public class FormsCoreService implements ApplicationRunner {
 
-
-
     @Comment("类名对应抽象组件类集合")
     private static final Map<String, FormsModel> FORMS = new LinkedCaseInsensitiveMap<>();
+
+    @Comment("类名对应抽象组件dao层")
+    private static final Map<String, JpaRepository> FORMS_REPOSITORY = new LinkedCaseInsensitiveMap<>();
 
     @Comment("抽象组件集合")
     private static final List<FormsModel> FORMS_LIST = new ArrayList<>();
 
     public static FormsModel getForms(String assemblyName) {
         return FORMS.get(assemblyName);
+    }
+
+    public static JpaRepository getFormsRepository(String assemblyName) {
+        return FORMS_REPOSITORY.get(assemblyName);
     }
 
     @SneakyThrows
@@ -56,7 +62,7 @@ public class FormsCoreService implements ApplicationRunner {
         // forms field data to memory
         formsModel.setFormsFieldModels(new ArrayList<>());
         formsModel.setFormsFieldMap(new LinkedCaseInsensitiveMap<>());
-        ReflectUtil.findClassAllFields(clazz, field -> Optional.ofNullable(field.getAnnotation(Column.class))
+        ReflectUtil.findClassAllFields(clazz, field -> Optional.ofNullable(field.getAnnotation(Title.class))
                 .ifPresent(ignore -> {
                     FormsFieldModel eruptFieldModel = new FormsFieldModel(field);
                     formsModel.getFormsFieldModels().add(eruptFieldModel);
@@ -91,6 +97,13 @@ public class FormsCoreService implements ApplicationRunner {
             FormsModel eruptModel = initFormsModel(clazz);
             FORMS.put(clazz.getSimpleName(), eruptModel);
             FORMS_LIST.add(eruptModel);
+
+            FormsProxy annotation = clazz.getAnnotation(FormsProxy.class);
+            if(Objects.nonNull(annotation)){
+                Class value = annotation.value();
+                JpaRepository repository = (JpaRepository)FormsSpringUtil.getBean(value);
+                FORMS_REPOSITORY.put(clazz.getSimpleName(),repository);
+            }
         });
         log.info("<" + repeat("===", 20) + ">");
 

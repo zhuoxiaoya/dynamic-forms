@@ -2,6 +2,9 @@ package com.yhtx.forms.prop;
 
 /**
  * 初始化方式
+ *
+ * @author YuePeng
+ * date 2022/7/11 22:35
  */
 public enum InitMethodEnum {
 

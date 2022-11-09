@@ -21,7 +21,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * jpa实体管理服务层
+ * @author YuePeng
+ * date 2020-01-13
  */
 @Service
 public class EntityManagerService implements DisposableBean {

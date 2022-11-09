@@ -24,7 +24,7 @@ public class InitAssembly implements ApplicationRunner {
         EditTypeEnum.values();
         Stream.of(EditTypeEnum.values()).forEach(o-> {
             FormsAssembly formsAssembly = new FormsAssembly();
-            formsAssembly.setAssemblyId(o.getEid());
+            formsAssembly.setId(o.getEid());
             formsAssembly.setAssemblyName(o.getName());
             formsAssembly.setEditType(o.getEditType());
             formsAssembly.setRequired(true);
