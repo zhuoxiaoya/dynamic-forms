@@ -45,7 +45,7 @@ dynamic-forms
 <dependency>
     <groupId>com.houlangmark</groupId>
     <artifactId>dynamic-forms</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 </dependency>
 ```
 
@@ -62,6 +62,16 @@ public class DemoApplication {
 
 }
 ``` 
+
+#### 调用示例
+1. 组件字段属性展示
+2. 组件列表查询
+3. 组件新增
+4. 组件详情展示
+5. 组件修改
+6. 组件删除
+7. 组件批量删除
+
 
 #### 参与贡献
 
