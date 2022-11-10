@@ -11,10 +11,7 @@ import com.yhtx.forms.service.FormsCoreService;
 import com.yhtx.forms.service.FormsService;
 import com.yhtx.forms.util.FormsUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController

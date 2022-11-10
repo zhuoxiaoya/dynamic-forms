@@ -1,6 +1,6 @@
 # dynamic-forms
 
-#### 介绍
+## 一.介绍
 动态表单服务端实现，可自动创建虚拟组件表，通过规则请求api自动完成增删查改，接口风格遵守resultfull风格
 
 
@@ -39,7 +39,7 @@ dynamic-forms
 ```
 
 
-#### 安装教程
+## 二. 安装教程
 1.只需要引入以下依赖包即可
 ``` xml
 <dependency>
@@ -49,7 +49,7 @@ dynamic-forms
 </dependency>
 ```
 
-#### 使用说明
+## 三. 使用说明
 1.只需要在启动类上加上@EnableDynamicForms注解即可轻松实现
 ``` java
 @EnableDynamicForms
@@ -63,15 +63,79 @@ public class DemoApplication {
 }
 ``` 
 
-#### 调用示例
-1. 组件字段属性展示
-2. 组件列表查询
-3. 组件新增
-4. 组件详情展示
-5. 组件修改
-6. 组件删除
-7. 组件批量删除
+## 四. 调用示例
+### 1.以下调用为举例，以组件库类FormsAssembly举例，其他组件类同理，替换相应的字段属性即可
+### 2.[接口文档示例](https://www.showdoc.cc/2123913536001181)
+### 3.主要接口展示
+#### 3.1. 组件字段属性展示
+``` shell
+GET /forms-api/build/{assembly}
+``` 
+|      参数名      |   参数位置   |    参数值    | 参数含义    | 是否必填  |
+|:-------------:|:--------:|:---------:|:-------:|:-----:|
+|   assembly    |   path   |     FormsAssembly      |  组件类名   | Y     |
 
+2. 组件列表查询
+``` shell
+POST /forms-api/data/table/{assembly}
+``` 
+|      参数名      | 参数位置 |            参数值             |    参数含义    | 是否必填 |
+|:-------------:|:----:|:--------------------------:|:----------:|:----:|
+|   pageIndex    | body |             0              |     页码     |  Y   |
+|   pageSize    | body |             10             |     页数     |  Y   |
+|   sort    | body |            name            |    列名排序    |  N   |
+|   condition    | body | {"key": "id","value": "1"} | 条件查询，k,v格式 |  N   |
+
+3. 组件新增
+``` shell
+POST /forms-api/data/modify/{assembly}
+``` 
+|      参数名      | 参数位置 |      参数值      | 参数含义 | 是否必填 |
+|:-------------:|:----:|:-------------:|:----:|:----:|
+|   assembly    | path | FormsAssembly | 组件名  |  Y   |
+|   assemblyName    | body |      地图       | 组件名称 |  Y   |
+|   required    | body |     true      | 是否必填 |  Y   |
+|   editType    | body |      map      | 组件类型 |  Y   |
+
+4. 组件详情展示
+``` shell
+GET /forms-api/data/{assembly}/{id}
+``` 
+|   参数名    | 参数位置 |      参数值      | 参数含义 | 是否必填 |
+|:--------:|:----:|:-------------:|:----:|:----:|
+| assembly | path | FormsAssembly | 组件名  |  Y   |
+|    id    | body |       1       | 组件id |  Y   |
+
+5. 组件修改
+``` shell
+PUT /forms-api/data/modify/{assembly}
+``` 
+|     参数名      | 参数位置 |      参数值      | 参数含义 | 是否必填 |
+|:------------:|:----:|:-------------:|:----:|:----:|
+|   assembly   | path | FormsAssembly | 组件名  |  Y   |
+| assemblyName | body |      地图       | 组件名称 |  Y   |
+|      id      | body |       1       |  id  |  Y   |
+|   required   | body |     true      | 组件类型 |  Y   |
+|   editType   | body |      map      | 组件类型 |  Y   |
+
+6. 组件删除
+``` shell
+DELETE /forms-api/data/modify/{assembly}/{id}
+``` 
+|     参数名      | 参数位置 |      参数值      | 参数含义 | 是否必填 |
+|:------------:|:----:|:-------------:|:----:|:----:|
+|   assembly   | path | FormsAssembly | 组件名  |  Y   |
+|      id      | path |       1       |  id  |  Y   |
+
+7. 组件批量删除
+``` shell
+DELETE /forms-api/data/modify/{assembly}
+``` 
+|   参数名    | 参数位置  |      参数值      |    参数含义     | 是否必填 |
+|:--------:|:-----:|:-------------:|:-----------:|:----:|
+| assembly | path  | FormsAssembly |     组件名     |  Y   |
+|   ids    | param |       1       | id数组，可写多个ID |  Y   |
+|   ids    | param |       2       |    id数组     |  Y   |
 
 #### 参与贡献
 
